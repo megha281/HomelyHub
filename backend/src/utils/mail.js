@@ -30,7 +30,7 @@ const sendMail = async (options) => {
   // process.env. A small typo, good one to spot.
   const transporter = nodemailer.createTransport({
     host: process.env.MAILTRAP_SMTP_HOST,
-    port: process.emit.MAILTRAP_SMTP_PORT,
+    port: Number(process.env.MAILTRAP_SMTP_PORT),
     secure: false,
     auth: {
       user: process.env.MAILTRAP_SMTP_USER,

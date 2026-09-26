@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: homelyhub-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: ORIGIN_ACCESS_URL
+        value: https://homelyhub-frontend.onrender.com
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: JWT_COOKIE_EXPIRES_IN
+        value: "7"
+      - key: IMAGEKIT_PUBLICKEY
+        sync: false
+      - key: IMAGEKIT_PRIVATEKEY
+        sync: false
+      - key: IMAGEKIT_URLENDPOINT
+        sync: false
+      - key: MAILTRAP_SMTP_HOST
+        sync: false
+      - key: MAILTRAP_SMTP_PORT
+        sync: false
+      - key: MAILTRAP_SMTP_USER
+        sync: false
+      - key: MAILTRAP_SMTP_PASS
+        sync: false
+
+  - type: web
+    name: homelyhub-frontend
+    runtime: static
+    rootDir: Frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://homelyhub-backend.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
